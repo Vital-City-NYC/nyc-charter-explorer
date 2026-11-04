@@ -927,6 +927,8 @@ function stateToUrl(){
   if(state.chap) p.set('chap',state.chap);
   if(state.since) p.set('since',state.since);
   if(state.crc) p.set('crc',state.crc);
+  // keep embed mode across URL updates, so a reload inside the article stays compact
+  if(document.documentElement.classList.contains('embed')) p.set('embed','1');
   const qs=p.toString();
   history.replaceState(null,'',location.pathname+(qs?'?'+qs:'')+(location.hash||''));
 }
@@ -1292,7 +1294,14 @@ filtersBtn.addEventListener('click',()=>{
 // The embed is a fixed-height widget (results scroll inside), so no iframe auto-resize.
 (function(){
   const full = location.origin + location.pathname + '?full=1';
-  ['expandFull','expandFull2'].forEach(id=>{ const a=document.getElementById(id); if(a) a.href=full; });
+  ['expandFull','expandFull2'].forEach(id=>{ const a=document.getElementById(id); if(!a) return;
+    a.href=full;
+    // carry the reader's current search and open section into the full-screen view
+    a.addEventListener('click',()=>{
+      const p=new URLSearchParams(location.search); p.delete('embed'); p.set('full','1');
+      a.href=location.origin+location.pathname+'?'+p+(location.hash||'');
+    });
+  });
   if(document.documentElement.classList.contains('embed')) return;
   const params=new URLSearchParams(location.search);
   if(params.get('full')==='1'){
