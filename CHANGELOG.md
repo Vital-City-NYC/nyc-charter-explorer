@@ -2,6 +2,63 @@
 
 Record of when the Charter data in this explorer changed, kept by `refresh.py`. A refresh is logged here only when American Legal Publishing's `currentThrough` version string advances. Section-level notes compare the new data against the prior copy by record id.
 
+## 2026-11-02
+
+- Currency: `Current through Local Law 2026/147, enacted September 12, 2026,and includes amendments effective through October 2, 2026.` -> `Current through Local Law 2026/160, enacted October 24, 2026,and includes amendments effective through October 28, 2026.`
+- No section text changed (currency/effective-date update only).
+
+## 2026-10-05
+
+- Currency: `Current through Local Law 2026/147, enacted September 12, 2026,and includes amendments effective through September 23, 2026.` -> `Current through Local Law 2026/147, enacted September 12, 2026,and includes amendments effective through October 2, 2026.`
+- 6 section(s) with changed text: § 1125, § 2204, § 26, § 4, § 81, § 91
+
+## 2026-09-28
+
+- Currency: `Current through Local Law 2026/147, enacted September 12, 2026,and includes amendments effective through September 12, 2026.` -> `Current through Local Law 2026/147, enacted September 12, 2026,and includes amendments effective through September 23, 2026.`
+- 1 section(s) with changed text: § 734
+
+## 2026-09-22
+
+- Currency: `Current through Local Law 2026/135, enacted August 31, 2026,and includes amendments effective through September 10, 2026.` -> `Current through Local Law 2026/147, enacted September 12, 2026,and includes amendments effective through September 12, 2026.`
+- 1 section(s) with changed text: § 2204
+
+## 2026-09-14
+
+- Currency: `Current through Local Law 2026/134, enacted August 18, 2026,and includes amendments effective through August 18, 2026.` -> `Current through Local Law 2026/135, enacted August 31, 2026,and includes amendments effective through September 10, 2026.`
+- No section text changed (currency/effective-date update only).
+
+## 2026-08-24
+
+- Currency: `Current through Local Law 2026/126, enacted July 30, 2026,and includes amendments effective through August 7, 2026.` -> `Current through Local Law 2026/134, enacted August 18, 2026,and includes amendments effective through August 18, 2026.`
+- 5 section(s) with changed text: § 1125, § 26, § 4, § 81, § 91
+- 1 section(s) added: § 20-w
+
+## 2026-08-17
+
+- Currency: `Current through Local Law 2026/116, enacted July 11, 2026,and includes amendments effective through August 7, 2026.` -> `Current through Local Law 2026/126, enacted July 30, 2026,and includes amendments effective through August 7, 2026.`
+- 1 section(s) with changed text: § 20-v
+- 1 section(s) added: Chapter 2
+
+## 2026-08-10
+
+- Currency: `Current through Local Law 2026/116, enacted July 11, 2026,and includes amendments effective through July 25, 2026.` -> `Current through Local Law 2026/116, enacted July 11, 2026,and includes amendments effective through August 7, 2026.`
+- 3 section(s) with changed text: § 3005, § 3007, § 3009
+
+## 2026-07-27
+
+- Currency: `Current through Local Law 2026/112, enacted June 19, 2026,and includes amendments effective through July 1, 2026.` -> `Current through Local Law 2026/116, enacted July 11, 2026,and includes amendments effective through July 25, 2026.`
+- No section text changed (currency/effective-date update only).
+
+## 2026-07-06
+
+- Currency: `Current through Local Law 2026/112, enacted June 19, 2026,and includes amendments effective through June 26, 2026.` -> `Current through Local Law 2026/112, enacted June 19, 2026,and includes amendments effective through July 1, 2026.`
+- 1 section(s) with changed text: § 332
+
+## 2026-06-29
+
+- Currency: `Current through Local Law 2026/094, enacted May 16, 2026,and includes amendments effective through May 28, 2026.` -> `Current through Local Law 2026/112, enacted June 19, 2026,and includes amendments effective through June 26, 2026.`
+- No section text changed (currency/effective-date update only).
+
 ## 2026-06-02
 
 - **Text-extraction fix (not Charter amendments).** Switched to a parser that preserves document order. The previous parser (fast-xml-parser) appended inline `<LINK>` cross-reference elements after the surrounding text, reordering spelled-out section numbers to the end of a sentence — e.g. "the provisions of sections 277 and 278 of the charter" had been mangled to "the provisions of sections and of the charter … two hundred seventy-seven two hundred seventy-eight." This affected 151 sections (now 0) and corrected text in ~565 sections. Also added a missing space after subdivision markers ("a.any" -> "a. any"). No section was added, removed or re-cited; the Charter Revision Commission tags are unaffected.

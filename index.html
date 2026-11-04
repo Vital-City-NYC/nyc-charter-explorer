@@ -9,8 +9,10 @@
 /* set theme + embed mode before paint to avoid a flash */
 (function(){try{var p=localStorage.getItem('charter_theme')||'auto';
 var d=p==='dark'||(p==='auto'&&matchMedia('(prefers-color-scheme:dark)').matches);
-document.documentElement.dataset.theme=d?'dark':'light';
-if(new URLSearchParams(location.search).get('embed')==='1') document.documentElement.classList.add('embed');
+var emb=new URLSearchParams(location.search).get('embed')==='1';
+/* the embed sits in a white article column, so it always renders light */
+document.documentElement.dataset.theme=(d&&!emb)?'dark':'light';
+if(emb) document.documentElement.classList.add('embed');
 }catch(e){}})();
 </script>
 <style>
@@ -39,51 +41,44 @@ if(new URLSearchParams(location.search).get('embed')==='1') document.documentEle
     color-scheme:dark;
   }
   /* dark overrides for the colored badge/accent spots that aren't on tokens */
-  html[data-theme="dark"] .amend.hot{border-color:#5a3a28}
-  html[data-theme="dark"] .amend.eff{color:#e3c87a;background:#2c2410;border-color:#4a3c18}
-  html[data-theme="dark"] .crc-badge{color:#8fd4da;background:#123034;border-color:#1f4a50}
-  html[data-theme="dark"] .crc-detail{color:#9fd2d8;background:#10282b;border-color:#1f4a50}
-  html[data-theme="dark"] .crc-detail .passed{color:#bfe7eb;background:#16383c}
+  html[data-theme="dark"] .amend.eff{color:var(--ink);background:#2a2a14;border-color:#6d7027}
+  html[data-theme="dark"] .crc-badge{color:#7fb8e0;border-color:#7fb8e0}
+  html[data-theme="dark"] .crc-detail{color:#9fc7e6;background:#0f1d29;border-color:#25425a}
+  html[data-theme="dark"] .crc-detail .passed{color:#cfe3f3;background:#183247}
   html[data-theme="dark"] .crc-detail .act.added{color:#7fd69b;background:#13301f;border-color:#1f4a32}
   html[data-theme="dark"] .crc-detail .act.amended{color:#e3c87a;background:#2c2410;border-color:#4a3c18}
   html[data-theme="dark"] .crc-detail .act.repealed{color:#e8a0a0;background:#33181a;border-color:#5a2a2a}
   html[data-theme="dark"] .rejected .rtag{color:#e8a0a0;background:#33181a;border-color:#5a2a2a}
-  html[data-theme="dark"] .fchip .x:hover{background:#5a3a28}
-  html[data-theme="dark"] .annobar .abtn.on{border-color:#5a3a28}
   html[data-theme="dark"] a.xref{border-bottom-color:#7a4a32}
-  html[data-theme="dark"] .smbtn.copied{border-color:#2f6b48}
   *{box-sizing:border-box}
   html{scroll-behavior:smooth}
   body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);
        font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
   a{color:var(--accent)}
   /* visible keyboard focus for every interactive control (accessibility) */
-  :focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+  :focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:0}
   .search input:focus-visible{outline-offset:0}
   .sec-head:focus-visible{outline-offset:-2px}
 
   /* ---- top bar ---- */
   header{position:sticky;top:0;z-index:30;background:var(--card);
-         border-bottom:1px solid var(--line-strong);box-shadow:0 1px 0 rgba(0,0,0,.02)}
-  .bar{max-width:1180px;margin:0 auto;padding:14px 20px}
-  .titlerow{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
-  /* Vital City title — Halyard Black, sentence case */
+         border-bottom:1px solid var(--line)}
+  .bar{max-width:1180px;margin:0 auto;padding:16px 20px}
+  .titlerow{display:flex;align-items:flex-start;gap:14px;flex-wrap:wrap}
+  /* Vital City title — Halyard Black, sentence case, no kicker */
   h1{font-family:var(--sans);font-weight:900;font-size:clamp(23px,3.1vw,34px);
-    margin:0;line-height:1.04;letter-spacing:-.015em;color:var(--ink)}
-  h1 .kicker{display:block;font-weight:700;font-size:12px;letter-spacing:.09em;text-transform:uppercase;
-    color:var(--accent);margin-bottom:5px}
-  .currency{font-size:12px;color:var(--faint)}
-  .credit{font-size:11.5px;color:var(--faint);line-height:1.4;max-width:62ch;margin-top:2px}
-  .credit a{color:var(--accent);text-decoration:none;border-bottom:1px solid var(--accent-soft)}
-  .credit a:hover{border-bottom-color:var(--accent)}
-  .ask{margin-left:auto;display:inline-flex;flex-direction:column;align-items:flex-end;gap:0;
-    text-decoration:none;background:var(--accent);color:#fff;padding:7px 14px;border-radius:8px;
-    line-height:1.2;box-shadow:0 1px 2px rgba(0,0,0,.12);transition:background .15s,transform .05s}
-  .ask{color:var(--ask-ink)}
-  .ask:hover{background:var(--accent-hover);transform:translateY(-1px)}
-  .ask:active{transform:translateY(1px)}
-  .ask{font-size:14px;font-weight:600}
-  .ask-sub{font-size:10.5px;font-weight:400;opacity:.85;letter-spacing:.01em}
+    margin:0;line-height:1.08;letter-spacing:-.005em;color:var(--ink)}
+  .currency{font-size:12px;font-weight:300;color:var(--faint)}
+  .credit{font-size:12px;font-weight:300;color:var(--faint);line-height:1.4;max-width:62ch}
+  .credit a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--accent)}
+  .credit a:hover{color:var(--accent)}
+  /* primary call to action: Safety Orange, square, black hairline */
+  .ask{margin-left:auto;display:inline-flex;flex-direction:column;align-items:flex-start;gap:2px;
+    text-decoration:none;background:var(--accent);color:var(--ask-ink);padding:8px 14px;border-radius:0;
+    border:1px solid var(--ink);line-height:1.2;transition:background .15s}
+  .ask:hover{background:var(--accent-hover)}
+  .ask{font-size:12px;font-weight:700;letter-spacing:.07em;text-transform:uppercase}
+  .ask-sub{font-size:11px;font-weight:300;letter-spacing:0;text-transform:none}
   /* Ask button + its caveat as a tight right-aligned column */
   .askwrap{display:flex;flex-direction:column;align-items:flex-end;gap:5px}
   .ask-note{font-size:11.5px;color:var(--faint);line-height:1.4;max-width:30ch;text-align:right}
@@ -95,22 +90,30 @@ if(new URLSearchParams(location.search).get('embed')==='1') document.documentEle
   .searchrow{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
   .filtersrow{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end}
   .search{flex:1 1 220px;min-width:0;position:relative}
-  .search input{width:100%;padding:11px 38px 11px 14px;font-size:16px;font-family:var(--sans);
-    border:1px solid var(--line-strong);border-radius:8px;background:var(--paper);color:var(--ink)}
-  .search input:focus{outline:none;border-color:var(--accent);background:var(--field)}
+  .search input{width:100%;padding:10px 38px 10px 12px;font-size:16px;font-family:var(--sans);font-weight:300;
+    border:1px solid var(--ink);border-radius:0;background:var(--field);color:var(--ink)}
+  .search input::placeholder{color:var(--faint)}
+  .search input:focus{outline:none;border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
   .search .clear{position:absolute;right:8px;top:50%;transform:translateY(-50%);
     border:none;background:none;font-size:18px;color:var(--faint);cursor:pointer;padding:4px 8px;display:none}
-  select{padding:10px 12px;font-size:14px;font-family:var(--sans);border:1px solid var(--line-strong);
-    border-radius:8px;background:var(--paper);color:var(--ink);cursor:pointer;max-width:230px}
-  label.ctl{font-size:13px;color:var(--ink-soft);display:flex;flex-direction:column;gap:4px}
-  .count{font-size:13px;color:var(--ink-soft);white-space:nowrap;margin-left:auto}
+  select{padding:7px 10px;font-size:13px;font-family:var(--sans);font-weight:300;border:1px solid var(--ink);
+    border-radius:0;background:var(--field);color:var(--ink);cursor:pointer;max-width:230px}
+  /* utility type for control labels and the result count */
+  label.ctl{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--faint);display:flex;flex-direction:column;gap:4px}
+  .count{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--faint);white-space:nowrap;margin-left:auto;font-variant-numeric:tabular-nums}
 
   /* header utilities (theme + density toggles) */
   .titlewrap{display:flex;flex-direction:column;gap:6px;margin-right:auto;position:relative}
   .util{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-  .ubtn{font-size:12px;border:1px solid var(--line-strong);background:var(--paper);color:var(--ink-soft);
-    border-radius:7px;padding:6px 10px;cursor:pointer;white-space:nowrap}
-  .ubtn:hover{border-color:var(--accent);color:var(--accent)}
+  /* Vital City utility buttons: square, black hairline, fill black when active */
+  .ubtn,.tbtn,.fclear,.annobar .abtn,.smbtn{font-family:var(--sans);font-size:10.5px;font-weight:700;
+    letter-spacing:.08em;text-transform:uppercase;border:1px solid var(--ink);background:var(--card);
+    color:var(--ink);border-radius:0;padding:7px 11px;cursor:pointer;white-space:nowrap;
+    text-decoration:none;line-height:1.2;transition:background .15s,color .15s}
+  .ubtn:hover,.tbtn:hover,.fclear:hover,.annobar .abtn:hover,.smbtn:hover{background:var(--paper);color:var(--ink);border-color:var(--ink)}
+  .ubtn[aria-pressed="true"],.annobar .abtn.on,.controls.adv-open .filters-btn{background:var(--ink);color:var(--card);border-color:var(--ink)}
   /* advanced filters: on desktop the labels flow as direct row items so the
      boxes bottom-align uniformly; on mobile they collapse into a drawer */
   .advfilters{display:contents}
@@ -120,7 +123,6 @@ if(new URLSearchParams(location.search).get('embed')==='1') document.documentEle
     .filters-btn{display:inline-block;flex:0 0 auto}
     .advfilters{display:none}
     .controls.adv-open .advfilters{display:flex;flex-wrap:wrap;gap:10px;width:100%}
-    .controls.adv-open .filters-btn{border-color:var(--accent);color:var(--accent)}
     label.ctl{flex:1 1 44%}
     label.ctl select{width:100%}
   }
@@ -136,13 +138,14 @@ if(new URLSearchParams(location.search).get('embed')==='1') document.documentEle
   .wrap{max-width:1180px;margin:0 auto;padding:20px;display:grid;
         grid-template-columns:264px 1fr;gap:26px;align-items:start}
   nav.toc{position:sticky;top:128px;max-height:calc(100vh - 148px);overflow-y:auto;
-    background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px}
-  nav.toc h2{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--faint);
+    background:var(--card);border:1px solid var(--line);border-radius:0;padding:10px}
+  nav.toc h2{font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:var(--faint);
     margin:6px 8px 8px;font-weight:700}
-  .chaplink{display:flex;justify-content:space-between;gap:8px;padding:6px 8px;border-radius:6px;
+  .chaplink{display:flex;justify-content:space-between;gap:8px;padding:6px 8px;border-radius:0;
     font-size:13px;color:var(--ink-soft);cursor:pointer;text-decoration:none;line-height:1.3}
   .chaplink:hover{background:var(--paper)}
-  .chaplink.active{background:var(--accent-soft);color:var(--accent);font-weight:600}
+  .chaplink.active{background:var(--ink);color:var(--card);font-weight:700}
+  .chaplink.active .cc{color:var(--card)}
   .chaplink .cn{flex:1}
   .chaplink .cc{font-size:11px;color:var(--faint);white-space:nowrap;font-variant-numeric:tabular-nums}
 
@@ -150,47 +153,47 @@ if(new URLSearchParams(location.search).get('embed')==='1') document.documentEle
   .chapter-head{font-family:var(--sans);font-size:19px;font-weight:900;letter-spacing:-.01em;color:var(--ink);
     margin:30px 0 4px;padding-bottom:6px;border-bottom:2px solid var(--ink);scroll-margin-top:140px}
   .chapter-head:first-child{margin-top:0}
-  .chapter-sub{font-size:12px;color:var(--faint);margin-bottom:12px}
+  .chapter-sub{font-size:12px;color:var(--faint);margin-bottom:4px}
 
-  article{background:var(--card);border:1px solid var(--line);border-radius:10px;
-    margin:0 0 12px;overflow:hidden;scroll-margin-top:140px}
-  .sec-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 10px;padding:13px 16px;cursor:pointer;
+  /* sections are rows in a hairline-ruled list (no floating cards, no gaps) */
+  article{background:var(--card);border:0;border-bottom:1px solid var(--line);border-radius:0;
+    margin:0;overflow:hidden;scroll-margin-top:140px}
+  .sec-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 10px;padding:12px 4px;cursor:pointer;
     user-select:none}
   .sec-head:hover{background:var(--paper)}
   .cite{font-family:var(--serif);font-weight:400;color:var(--accent);font-size:18px;
     white-space:nowrap;min-width:58px;font-variant-numeric:tabular-nums}
-  .sec-title{font-weight:600;font-size:15px;flex:1 1 58%;min-width:10ch;line-height:1.35}
-  .chip{font-size:10.5px;color:var(--faint);background:var(--paper);border:1px solid var(--line);
-    border-radius:20px;padding:2px 9px;white-space:nowrap;align-self:center}
-  .amend{font-size:10.5px;color:var(--ink-soft);background:var(--paper);border:1px solid var(--line);
-    border-radius:20px;padding:2px 9px;white-space:nowrap;align-self:center;font-variant-numeric:tabular-nums}
-  .amend.hot{color:var(--accent);background:var(--accent-soft);border-color:#eccab7;font-weight:600}
-  .amend.eff{color:#7a5b16;background:#fdf2d6;border-color:#ecd9a4}
+  .sec-title{font-weight:700;font-size:15px;flex:1 1 58%;min-width:10ch;line-height:1.35}
+  /* tags: utility type, square, hairline */
+  .chip,.amend,.crc-badge{font-size:9.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--faint);background:transparent;border:1px solid var(--line);border-radius:0;
+    padding:3px 7px;white-space:nowrap;align-self:center;font-variant-numeric:tabular-nums;line-height:1.2}
+  .amend.hot{color:var(--ink);border-color:var(--accent);background:var(--accent-soft)}
+  .amend.eff{color:var(--ink);background:#f7f8dd;border-color:#dde44c}
   .laws{margin-top:14px;padding-top:10px;border-top:1px dotted var(--line-strong);
     font-family:var(--sans);font-size:12px;color:var(--ink-soft);line-height:1.7}
   .laws-h{display:block;font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--faint);margin-bottom:3px}
-  .crc-badge{font-size:10.5px;color:#0b5563;background:#d8f0f2;border:1px solid #a9dbe0;
-    border-radius:20px;padding:2px 9px;white-space:nowrap;align-self:center;font-weight:700;letter-spacing:.02em}
-  .crc-detail{margin-top:14px;padding:10px 12px;background:#eefafb;border:1px solid #c5e6ea;border-radius:8px;
-    font-family:var(--sans);font-size:12.5px;color:#0b5563}
+  .crc-badge{color:#217ebe;border-color:#217ebe}
+  .crc-detail{margin-top:14px;padding:10px 12px;background:#eef5fb;border:1px solid #bcd7ec;border-radius:0;
+    font-family:var(--sans);font-size:12.5px;color:#1a5f8f}
   .crc-detail ul{margin:4px 0 0;padding-left:18px}
   .crc-detail li{margin:3px 0;color:var(--ink-soft)}
-  .crc-detail .passed{font-size:10px;color:#0b5563;background:#cdeef0;border-radius:10px;padding:1px 6px;margin-left:4px}
+  .crc-detail .passed{font-size:10px;color:#1a5f8f;background:#d6e7f4;border-radius:0;padding:1px 6px;margin-left:4px}
   .toggle{color:var(--faint);font-size:13px;transition:transform .15s;align-self:center;margin-left:auto}
   article.open .toggle{transform:rotate(90deg)}
-  .sec-body{display:none;padding:0 16px 16px;border-top:1px solid var(--line);
+  .sec-body{display:none;padding:0 4px 18px;border-top:1px solid var(--line);
     font-family:var(--sans);font-weight:300;font-size:15px;line-height:1.7;color:var(--ink)}
   article.open .sec-body{display:block}
   .sec-body p{margin:14px 0 0;white-space:pre-wrap}
   .sec-body .reading{padding-top:6px}
-  mark{background:var(--mark);color:inherit;border-radius:2px;padding:0 1px}
+  mark{background:var(--mark);color:inherit;border-radius:0;padding:0 1px}
   /* user passage highlights (persisted, click to remove) */
   mark.uhl{cursor:pointer;box-shadow:inset 0 -2px 0 rgba(0,0,0,.14)}
   mark.uhl:hover{outline:1px solid var(--accent);outline-offset:1px}
   html[data-theme="dark"] mark.uhl{box-shadow:inset 0 -2px 0 rgba(255,255,255,.22)}
 
   /* in-text cross-reference links */
-  a.xref{color:var(--accent);text-decoration:none;border-bottom:1px dotted #d3a892;cursor:pointer}
+  a.xref{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--accent);cursor:pointer}
   a.xref:hover{border-bottom-style:solid;background:var(--accent-soft)}
   /* flash a section when arrived at via cross-ref / deep link */
   @keyframes flashcard{0%{box-shadow:0 0 0 3px var(--accent)}100%{box-shadow:0 0 0 3px transparent}}
@@ -200,11 +203,11 @@ if(new URLSearchParams(location.search).get('embed')==='1') document.documentEle
   .sectools{display:inline-flex;gap:2px;align-self:center;opacity:0;max-width:0;overflow:hidden;
     transition:opacity .12s,max-width .12s}
   .sec-head:hover .sectools,.sec-head:focus-within .sectools,article.open .sectools{opacity:1;max-width:300px}
-  /* touch devices have no hover — keep the tools reachable */
-  @media(hover:none){.sectools{opacity:1;max-width:300px}}
-  .stbtn{border:none;background:none;color:var(--faint);cursor:pointer;font-size:13px;padding:3px 5px;
-    border-radius:6px;line-height:1}
-  .stbtn:hover{background:var(--paper);color:var(--accent)}
+  /* touch devices have no hover: tapping a row opens it, which reveals the tools */
+  .stbtn{border:none;background:none;color:var(--faint);cursor:pointer;font-family:var(--sans);
+    font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:4px 6px;
+    border-radius:0;line-height:1}
+  .stbtn:hover{background:var(--paper);color:var(--ink)}
   .stbtn.copied{color:var(--ok)}
   /* personal annotations (stored in this browser) */
   .stbtn[data-act="hl"].on{color:#b8860b;font-weight:600}
@@ -216,12 +219,12 @@ if(new URLSearchParams(location.search).get('embed')==='1') document.documentEle
   article.hled .anno-dot,article.noted .anno-dot,article.marked .anno-dot{display:inline-block}
   article.noted:not(.hled):not(.marked) .anno-dot{background:var(--accent-soft);border-color:#e0a07f}
   .note-wrap{display:none;margin-top:14px;border:1px solid var(--line-strong);border-left:4px solid var(--mark);
-    border-radius:6px;background:var(--note-bg);padding:8px 10px}
+    border-radius:0;background:var(--note-bg);padding:8px 10px}
   article.note-open .note-wrap,article.noted .note-wrap{display:block}
   .note-wrap label{display:block;font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;
     color:var(--faint);margin-bottom:4px}
   .note-ta{width:100%;box-sizing:border-box;min-height:54px;resize:vertical;font:inherit;font-size:13px;
-    border:1px solid var(--line);border-radius:5px;padding:6px 8px;background:var(--field);color:var(--ink)}
+    border:1px solid var(--line);border-radius:0;padding:6px 8px;background:var(--field);color:var(--ink)}
   .note-ta:focus{outline:none;border-color:var(--accent)}
   .note-meta{display:flex;justify-content:space-between;align-items:center;margin-top:4px}
   .note-meta .nclear{border:none;background:none;color:var(--faint);font-size:11px;cursor:pointer;padding:2px 4px}
@@ -230,24 +233,17 @@ if(new URLSearchParams(location.search).get('embed')==='1') document.documentEle
   .note-meta .nsaved.show{opacity:1}
   .annobar{display:none;gap:10px;margin-top:10px;flex-wrap:wrap;align-items:center;font-size:12px;color:var(--ink-soft)}
   .annobar.on{display:flex}
-  .annobar .abtn{font-size:12px;border:1px solid var(--line-strong);background:var(--paper);color:var(--ink-soft);
-    padding:4px 9px;border-radius:6px;cursor:pointer}
-  .annobar .abtn:hover{border-color:var(--accent);color:var(--accent)}
-  .annobar .abtn.on{background:var(--accent-soft);border-color:#eccab7;color:var(--accent);font-weight:600}
   .annobar .acave{color:var(--faint);font-size:11px}
   /* share menu */
-  .share-menu{display:none;flex-wrap:wrap;gap:6px;align-items:center;padding:9px 16px;
-    border-top:1px dashed var(--line-strong);background:var(--paper);font-size:12px}
+  .share-menu{display:none;flex-wrap:wrap;gap:6px;align-items:center;padding:9px 4px;
+    border-top:1px solid var(--line);background:var(--paper);font-size:12px}
   article.share-open .share-menu{display:flex}
   .share-menu .sm-label{color:var(--faint);font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;margin-right:2px}
-  .smbtn{border:1px solid var(--line-strong);background:var(--field);color:var(--ink-soft);border-radius:6px;
-    padding:3px 10px;cursor:pointer;font-size:12px}
-  .smbtn:hover{border-color:var(--accent);color:var(--accent)}
-  .smbtn.copied{color:var(--ok);border-color:#9ccfb0}
+  .smbtn.copied{color:var(--ok);border-color:var(--ok)}
   .share-sep{flex-basis:100%;height:0}
   .sm-passage{display:contents}
   ::selection{background:var(--mark)}
-  .pass-flash{background:var(--mark);border-radius:2px}
+  .pass-flash{background:var(--mark);border-radius:0}
 
   /* sec-head as a button */
   .sec-head{width:100%;text-align:left;border:none;background:none;font-family:inherit;font-size:inherit;color:inherit}
@@ -256,24 +252,21 @@ if(new URLSearchParams(location.search).get('embed')==='1') document.documentEle
   /* active-filters bar */
   .filterbar{display:none;gap:8px;margin-top:10px;flex-wrap:wrap;align-items:center}
   .filterbar.on{display:flex}
-  .fchip{display:inline-flex;align-items:center;gap:6px;font-size:12px;background:var(--accent-soft);
-    color:var(--accent);border:1px solid #eccab7;border-radius:20px;padding:3px 6px 3px 11px}
-  .fchip .x{border:none;background:none;color:var(--accent);cursor:pointer;font-size:14px;line-height:1;padding:0 4px;border-radius:50%}
-  .fchip .x:hover{background:#f3cdbb}
-  .fclear{font-size:12px;border:1px solid var(--line-strong);background:var(--paper);color:var(--ink-soft);
-    border-radius:20px;padding:4px 11px;cursor:pointer}
-  .fclear:hover{border-color:var(--accent);color:var(--accent)}
+  .fchip{display:inline-flex;align-items:center;gap:6px;font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:var(--card);
+    color:var(--ink);border:1px solid var(--ink);border-radius:0;padding:4px 6px 4px 10px}
+  .fchip .x{border:none;background:none;color:var(--ink);cursor:pointer;font-size:14px;line-height:1;padding:0 4px}
+  .fchip .x:hover{background:var(--mark)}
   .chaplink.dim{opacity:.4}
   .chaplink .cc.hit{color:var(--accent);font-weight:600}
 
   /* rejected-proposals disclosure */
-  .rejected{margin-top:14px;border:1px solid var(--line);border-radius:8px;background:var(--card);overflow:hidden}
+  .rejected{margin-top:14px;border:1px solid var(--line);border-radius:0;background:var(--card);overflow:hidden}
   .rejected>summary{cursor:pointer;padding:10px 14px;font-size:12.5px;color:var(--ink-soft);font-weight:600;list-style:none}
   .rejected>summary::-webkit-details-marker{display:none}
   .rejected>summary::before{content:"▸ ";color:var(--faint)}
   .rejected[open]>summary::before{content:"▾ "}
   .rejected .rbody{padding:0 14px 12px;font-size:12.5px;color:var(--ink-soft);line-height:1.6}
-  .rejected .rtag{font-size:10px;color:#8a2b2b;background:#f7e0e0;border:1px solid #e6bcbc;border-radius:10px;padding:1px 7px;margin-left:6px;font-weight:700}
+  .rejected .rtag{font-size:10px;color:#8a2b2b;background:#f7e0e0;border:1px solid #e6bcbc;border-radius:0;padding:1px 7px;margin-left:6px;font-weight:700}
 
   /* amendment timeline */
   .timeline{margin-top:14px;padding-top:10px;border-top:1px dotted var(--line-strong)}
@@ -285,18 +278,18 @@ if(new URLSearchParams(location.search).get('embed')==='1') document.documentEle
 
   /* search syntax hint */
   .hint{font-size:13px;color:var(--ink-soft);margin-top:9px;line-height:1.55}
-  .hint code{background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:0 5px;
+  .hint code{background:var(--paper);border:1px solid var(--line);border-radius:0;padding:0 5px;
     font-family:ui-monospace,Menlo,monospace;font-size:12px;color:var(--ink-soft)}
 
   /* CRC action tints */
-  .crc-detail .act{font-size:10px;border-radius:10px;padding:1px 7px;margin-left:6px;font-weight:700}
+  .crc-detail .act{font-size:10px;border-radius:0;padding:1px 7px;margin-left:6px;font-weight:700}
   .crc-detail .act.added{color:#0b6b2e;background:#d7f0df;border:1px solid #aedabd}
   .crc-detail .act.amended{color:#7a5b16;background:#fdf2d6;border:1px solid #ecd9a4}
   .crc-detail .act.repealed{color:#8a2b2b;background:#f7e0e0;border:1px solid #e6bcbc}
 
   .empty{padding:60px 20px;text-align:center;color:var(--faint)}
-  .snip{font-family:var(--sans);font-size:13px;color:var(--ink-soft);padding:0 16px 12px;
-    border-top:1px solid var(--line);line-height:1.6}
+  .snip{font-family:var(--sans);font-weight:300;font-size:13px;color:var(--ink-soft);padding:0 4px 12px;
+    line-height:1.6}
   article.open .snip{display:none}
 
   footer{max-width:1180px;margin:0 auto;padding:24px 20px 60px;font-size:12px;color:var(--faint);
@@ -304,9 +297,6 @@ if(new URLSearchParams(location.search).get('embed')==='1') document.documentEle
   footer a{color:var(--accent-soft);color:var(--accent)}
 
   .toolbtns{display:flex;gap:8px}
-  .tbtn{font-size:12px;border:1px solid var(--line-strong);background:var(--paper);color:var(--ink-soft);
-    border-radius:7px;padding:8px 11px;cursor:pointer}
-  .tbtn:hover{background:var(--field);border-color:var(--accent);color:var(--accent)}
 
   @media (max-width:860px){
     .wrap{grid-template-columns:1fr;padding:14px}
@@ -330,47 +320,49 @@ if(new URLSearchParams(location.search).get('embed')==='1') document.documentEle
   html.embed body{height:100%;margin:0;background:var(--card);display:flex;flex-direction:column;min-height:0}
   html.embed .expand-only{display:inline-flex}
   html.embed header{position:static;flex:0 0 auto;border-bottom:1px solid var(--line)}
-  html.embed .bar{padding:11px 16px 12px}
+  html.embed .bar{padding:14px 16px 14px}
   /* strip everything that isn't search + the Ask button + the expand button */
   html.embed #themeToggle,html.embed #densityToggle,
   html.embed .currency,html.embed .credit,html.embed .ask-note,html.embed .hint,
   html.embed .filtersrow,html.embed .filters-btn,html.embed nav.toc,html.embed footer{display:none}
-  html.embed .titlerow{align-items:center}
-  html.embed h1{font-size:clamp(16px,2.6vw,20px)}
-  html.embed .kicker{margin-bottom:2px;font-size:11px}
+  html.embed .titlerow{align-items:center;gap:10px 14px}
+  html.embed h1{font-size:clamp(18px,3vw,22px)}
   /* keep the Gemini Notebook "Ask" button, compact (single line, no caveat) */
   html.embed .askwrap{display:flex}
-  html.embed .ask{padding:7px 12px;font-size:12.5px;box-shadow:none}
+  html.embed .ask{padding:7px 11px;font-size:10.5px}
   html.embed .ask .ask-sub{display:none}
-  html.embed .controls{margin-top:10px;gap:7px}
+  html.embed .controls{margin-top:12px;gap:7px}
   html.embed .filterbar,html.embed .annobar{margin-top:6px}
   /* the results area is the only thing that scrolls */
   html.embed .wrap{flex:1 1 auto;min-height:0;overflow-y:auto;display:block;
-    grid-template-columns:1fr;max-width:none;padding:12px 16px 16px}
+    grid-template-columns:1fr;max-width:none;padding:6px 16px 16px}
   html.embed main{min-width:0}
-  /* keep the Full screen button prominent (safety-orange) in the widget */
-  html.embed #expandFull{background:var(--accent);color:var(--ask-ink);border-color:var(--accent);font-weight:700}
-  html.embed #expandFull:hover{background:var(--accent-hover);border-color:var(--accent-hover);color:var(--ask-ink)}
+  html.embed .chapter-head{font-size:16px;margin-top:22px}
+  html.embed .chapter-head:first-child{margin-top:6px}
+  /* source band along the bottom of the widget */
+  html.embed .embed-foot{display:flex;flex:0 0 auto;gap:6px 14px;flex-wrap:wrap;align-items:baseline;
+    border-top:1px solid var(--line);padding:8px 16px;font-size:11px;font-weight:300;color:var(--faint);line-height:1.4}
+  html.embed .embed-foot a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--accent)}
   /* full-screen confirmation bar (shown only when expanded from an embed) */
-  .fullbar{display:none;align-items:center;gap:12px;background:var(--accent);color:#050507;
-    font-family:var(--sans);font-weight:700;font-size:13px;padding:9px 18px;line-height:1.3}
+  .fullbar{display:none;align-items:center;gap:12px;background:var(--ink);color:var(--card);
+    font-family:var(--sans);font-weight:300;font-size:13px;padding:9px 18px;line-height:1.3}
   .fullbar.on{display:flex}
-  .fullbar b{font-weight:900}
-  .fullbar .fx{margin-left:auto;border:none;background:none;color:#050507;font-size:20px;
+  .fullbar b{font-weight:700}
+  .fullbar .fx{margin-left:auto;border:none;background:none;color:var(--card);font-size:20px;
     line-height:1;cursor:pointer;padding:0 4px;opacity:.7}
   .fullbar .fx:hover{opacity:1}
 </style>
 </head>
 <body>
 <div class="fullbar" id="fullbar" role="status">
-  <span><b>Full-screen explorer.</b> The complete tool — chapter index, light and dark themes, and all 770 sections.</span>
+  <span><b>Full-screen explorer.</b> The complete tool, with the chapter index, filters, light and dark themes and every section.</span>
   <button class="fx" id="fullbarX" aria-label="Dismiss this message" title="Dismiss">&times;</button>
 </div>
 <header>
   <div class="bar">
     <div class="titlerow">
       <div class="titlewrap">
-        <h1><span class="kicker">Search it yourself</span>Charter of the City of New York</h1>
+        <h1>Charter of the City of New York</h1>
         <span class="currency" id="currency"></span>
         <span class="credit">Made possible by <a href="https://github.com/BetaNYC/nyc-charter-laws-rules" target="_blank" rel="noopener">BetaNYC&rsquo;s nyc-charter-laws-rules</a>, which makes the Charter machine-readable.</span>
       </div>
@@ -448,8 +440,7 @@ if(new URLSearchParams(location.search).get('embed')==='1') document.documentEle
 </div>
 
 <div class="embed-foot">
-  <span>Source: American Legal Publishing, via the BetaNYC dataset.</span>
-  <a class="expand-cta" id="expandFull2" target="_blank" rel="noopener" style="margin-left:auto">Open the full explorer &#8599;</a>
+  <span>Source: <a href="https://codelibrary.amlegal.com/codes/newyorkcity/latest/overview" target="_blank" rel="noopener">American Legal Publishing</a>, via <a href="https://github.com/BetaNYC/nyc-charter-laws-rules" target="_blank" rel="noopener">BetaNYC</a>. <span id="embedThrough"></span></span>
 </div>
 
 <footer>
@@ -463,7 +454,7 @@ if(new URLSearchParams(location.search).get('embed')==='1') document.documentEle
   record changes by <em>Local Law</em> number and date. This dates a section's most recent recorded statutory change — it is
   <em>not</em> Charter Revision Commission attribution. Charter amendments adopted by ballot referendum are not consistently
   Local-Law-numbered, so this view cannot say which Charter Revision Commission produced a given change. About half of sections
-  (388 of 770) carry a Local Law amendment note; absence of a date means no amendment is recorded in the source, not necessarily that a section is unchanged.
+  (<span id="lawNoteCount"></span>) carry a Local Law amendment note; absence of a date means no amendment is recorded in the source, not necessarily that a section is unchanged.
   An "eff. YYYY" tag marks a change with a future effective date that is on record but not yet in force.
   <br><br>
   <strong>Charter Revision Commission tags.</strong> The "CRC" badge and the "revision commission" filter mark sections changed by a
@@ -495,6 +486,13 @@ const _through = ((D.version && D.version.charter && D.version.charter.currentTh
   'Current through Local Law 2026/094').replace(/,and\b/g, ', and').replace(/\s+/g, ' ').trim();
 document.getElementById('currency').textContent =
   _through + ' · ' + SECTIONS.length + ' sections';
+{ // short currency for the embed's source band, and live counts for the footer note
+  const ll = _through.match(/Local Law \d{4}\/\d+/);
+  const et = document.getElementById('embedThrough');
+  if (et) et.textContent = ll ? 'Current through ' + ll[0] + '.' : _through;
+  const lc = document.getElementById('lawNoteCount');
+  if (lc) lc.textContent = SECTIONS.filter(s=>s.amend_count).length + ' of ' + SECTIONS.length;
+}
 
 // chapter dropdown
 CHAPTERS.forEach(c=>{
@@ -1258,7 +1256,9 @@ const themeMq=window.matchMedia('(prefers-color-scheme:dark)');
 let themePref=localStorage.getItem(THEME_KEY)||'auto';
 function applyTheme(pref){
   const resolved = pref==='auto' ? (themeMq.matches?'dark':'light') : pref;
-  document.documentElement.dataset.theme=resolved;
+  // the embed always renders light: it sits inside a white article column
+  document.documentElement.dataset.theme =
+    document.documentElement.classList.contains('embed') ? 'light' : resolved;
   themeBtn.textContent='Theme: '+pref;
 }
 applyTheme(themePref);
