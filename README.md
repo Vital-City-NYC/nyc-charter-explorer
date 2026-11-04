@@ -14,16 +14,25 @@ The `?embed=1` view is a **compact, fixed-height search widget**: a search box p
 Use the wrapper version below: the fixed height lives on the outer `<div>` and the iframe fills it absolutely, so a theme's `iframe { height: … }` CSS can't squash or stretch it.
 
 ```html
-<div style="position:relative;width:100%;height:600px;margin:1.5em 0;border:1px solid #dddddd;border-radius:10px;overflow:hidden;">
-  <iframe
-    src="https://vitalcity-nyc.github.io/nyc-charter-explorer/?embed=1"
-    title="Search the New York City Charter"
-    loading="lazy"
-    style="position:absolute;inset:0;width:100%;height:100%;border:0;"></iframe>
+<!-- NYC Charter Explorer — Vital City embed -->
+<div style="margin:1.5em 0;">
+  <div style="position:relative;width:100%;height:640px;border:1px solid #050507;overflow:hidden;">
+    <iframe
+      src="https://vitalcity-nyc.github.io/nyc-charter-explorer/?embed=1"
+      title="Search the New York City Charter"
+      loading="lazy"
+      allow="fullscreen"
+      style="position:absolute;inset:0;display:block;width:100%;height:100%;border:0;background:#ffffff;"></iframe>
+  </div>
+  <p style="font-size:0.8em;color:#707175;margin:0.5em 0 0;text-align:center;">
+    Search the full New York City Charter.
+    <a href="https://vitalcity-nyc.github.io/nyc-charter-explorer/" target="_blank" rel="noopener">Open full screen ↗</a>
+  </p>
 </div>
 ```
 
-- Adjust the wrapper `height:600px` to taste (≈560–680px works well). The widget fills the article width and scrolls internally; it never grows the page.
+- The single 1px black border on the wrapper is the only border, per the Vital City design system; the page draws none of its own in embed mode. The embed always renders in light mode to match the article.
+- Adjust the wrapper `height:640px` to taste (≈560–720px works well). The widget fills the article width and scrolls internally; it never grows the page.
 - The widget shows only the title, the search box, and the results. The chapter sidebar, filters, themes, notes/share controls and footer are kept for the full view to stay lightweight in-article.
 - A **"Full screen"** button (top-right of the widget) opens the complete explorer in a new tab — chapter index, filters, light/dark themes, highlights and notes, export, and the Gemini Notebook link. The full view also shows a brief banner confirming it was expanded.
 
