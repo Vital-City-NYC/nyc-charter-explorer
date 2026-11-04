@@ -93,6 +93,7 @@ if(emb) document.documentElement.classList.add('embed');
   .search input{width:100%;padding:10px 38px 10px 12px;font-size:16px;font-family:var(--sans);font-weight:300;
     border:1px solid var(--ink);border-radius:0;background:var(--field);color:var(--ink)}
   .search input::placeholder{color:var(--faint)}
+  .search input::-webkit-search-cancel-button{-webkit-appearance:none;appearance:none}
   .search input:focus{outline:none;border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
   .search .clear{position:absolute;right:8px;top:50%;transform:translateY(-50%);
     border:none;background:none;font-size:18px;color:var(--faint);cursor:pointer;padding:4px 8px;display:none}
@@ -331,6 +332,7 @@ if(emb) document.documentElement.classList.add('embed');
   html.embed .askwrap{display:flex}
   html.embed .ask{padding:7px 11px;font-size:10.5px}
   html.embed .ask .ask-sub{display:none}
+  @media (max-width:560px){html.embed .askwrap{width:auto}html.embed .ask{margin-top:0}}
   html.embed .controls{margin-top:12px;gap:7px}
   html.embed .filterbar,html.embed .annobar{margin-top:6px}
   /* the results area is the only thing that scrolls */
